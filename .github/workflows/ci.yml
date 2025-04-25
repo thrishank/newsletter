@@ -1,0 +1,42 @@
+name: Rust
+
+on: [push, pull_request]
+
+env:
+  CARGO_TERM_COLOR: always # always show color in termainl output
+  CARGO_INCREMENTAL: 0 # Disbale incremental compilation
+  RUST_BACKTRACE: 1 # Enables backtraces on panics
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3 # Get your repo code onto the runner
+      - uses: dtolnay/rust-toolchain@stable # Set up Rust environment
+      - uses: Swatinem/rust-cache@v2 # Cache Rust dependencies to speed up builds
+      - name: Run Tests
+        run: cargo test
+
+  fmt:
+    name: Rustfmt
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt
+      - name: Formatting
+        run: cargo fmt --check
+
+  clippy:
+    name: Clippy
+    runs-on: ubuntu-latest
+    step:
+      - uses: actions/checkout@v3
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt
+      - uses: Swatinem/rust-cache@v2
+      - name: Linting
+        run: cargo clippy
