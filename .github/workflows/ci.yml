@@ -32,11 +32,11 @@ jobs:
   clippy:
     name: Clippy
     runs-on: ubuntu-latest
-    step:
+    steps:
       - uses: actions/checkout@v3
       - uses: dtolnay/rust-toolchain@stable
         with:
-          components: rustfmt
+          components: clippy
       - uses: Swatinem/rust-cache@v2
       - name: Linting
         run: cargo clippy
