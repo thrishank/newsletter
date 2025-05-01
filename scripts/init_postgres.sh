@@ -27,20 +27,20 @@ HOST="localhost"
 # Pull latest postgres image
 # docker pull postgres:latest
 
-if [[-z "$SKIP_DOCKER"]]; then
+# if [[-z "$SKIP_DOCKER"]]; then
+#
+# Remove existing container if any
+docker rm -f $CONTAINER_NAME 2>/dev/null
 
-  # Remove existing container if any
-  docker rm -f $CONTAINER_NAME 2>/dev/null
-
-  # Run postgres container
-  docker run -d \
-    --name $CONTAINER_NAME \
-    -e POSTGRES_PASSWORD=$POSTGRES_PASSWORD \
-    -e POSTGRES_USER=$POSTGRES_USER \
-    -e POSTGRES_DB=$POSTGRES_DB \
-    -p $PORT:5432 \
-    postgres:latest
-fi
+# Run postgres container
+docker run -d \
+  --name $CONTAINER_NAME \
+  -e POSTGRES_PASSWORD=$POSTGRES_PASSWORD \
+  -e POSTGRES_USER=$POSTGRES_USER \
+  -e POSTGRES_DB=$POSTGRES_DB \
+  -p $PORT:5432 \
+  postgres:latest
+# fi
 # Echo connection URL
 CONNECTION_URL="postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${HOST}:${PORT}/${POSTGRES_DB}"
 echo "PostgreSQL is starting..."
@@ -53,3 +53,4 @@ until psql -h "$HOST" -U "$POSTGRES_USER" -p "$PORT" -d "postgres" -c '\q'; do
 done
 
 sqlx database create
+sqlx migrate run

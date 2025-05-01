@@ -1,13 +1,17 @@
 use actix_web::{App, HttpRequest, HttpResponse, HttpServer, Responder, dev::Server, web};
+use sqlx::PgPool;
 use std::net::TcpListener;
-mod config;
+pub mod config;
+pub mod routes;
 
-pub fn server(listener: TcpListener) -> Result<Server, std::io::Error> {
-    let app = HttpServer::new(|| {
+pub fn server(listener: TcpListener, connection: PgPool) -> Result<Server, std::io::Error> {
+    let connection = web::Data::new(connection);
+    let app = HttpServer::new(move || {
         App::new()
             .route("/health_check", web::get().to(health_check))
             .route("/test", web::get())
-            .route("/subscriptions", web::post().to(subscribe))
+            .route("/subscriptions", web::post().to(routes::subscribe))
+            .app_data(connection.clone())
     })
     .listen(listener)?
     .run();
@@ -15,14 +19,5 @@ pub fn server(listener: TcpListener) -> Result<Server, std::io::Error> {
 }
 
 async fn health_check(_req: HttpRequest) -> impl Responder {
-    HttpResponse::Ok().finish()
-}
-
-#[derive(serde::Deserialize)]
-struct FormData {
-    name: String,
-    email: String,
-}
-async fn subscribe(_form: web::Form<FormData>) -> impl Responder {
     HttpResponse::Ok().finish()
 }
