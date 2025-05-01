@@ -56,7 +56,7 @@ jobs:
 
       - name: Run Migrations
         run: |
-          SKIP_DOCKER=true ./scripts/init_db.sh
+          SKIP_DOCKER=true ./scripts/init_postgres.sh
 
       - name: Run Tests
         run: cargo test
