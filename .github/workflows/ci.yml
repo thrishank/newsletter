@@ -6,15 +6,56 @@ env:
   CARGO_TERM_COLOR: always # always show color in termainl output
   CARGO_INCREMENTAL: 0 # Disbale incremental compilation
   RUST_BACKTRACE: 1 # Enables backtraces on panics
+  SQLX_VERSION: 0.8.0
+  SQLX_FEATURES: "rustls,postgres"
+  APP_USER: postgres
+  APP_USER_PWD: mysecretpassword
+  APP_DB_NAME: email_newsletter
 
 jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
+    # Postgres Service
+    services:
+      postgres:
+        # Docker Image
+        image: postgres:14
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: mysecretpassword
+          POSTGRES_DB: email_newsletter
+        ports: 5432:5432
     steps:
-      - uses: actions/checkout@v3 # Get your repo code onto the runner
+      - name: Checkout repo code
+        # The uses keyword specifies that this step will run v4 of the actions/checkout action.
+        # This is an action that checks out your repository onto the runner, allowing you to run scripts or other actions against your code (such as build and test tools).
+        # You should use the checkout action any time your workflow will run against the repository's code.
+      - uses: actions/checkout@v4
+
+      - name: Install rust tool chain
       - uses: dtolnay/rust-toolchain@stable # Set up Rust environment
       - uses: Swatinem/rust-cache@v2 # Cache Rust dependencies to speed up builds
+
+      - name: Install sqlx-cli
+      - run: cargo install sqlx-cli --version=${{ env.SQLX_VERSION }}  --features ${{ env.SQLX_FEATURES }}  --no-default-features  --locked
+
+      - name: Create a user in posgres
+        run: |
+          sudo apt-get install postgres-client
+
+          # Create the application user
+          CREATE_QUERY="CREATE USER ${APP_USER} WITH PASSWORD '${APP_USER_PWD}';"
+          PGPASSWORD="password" psql -U "postgres" -h "localhost" -c "${CREATE_QUERY}"
+
+          # Grant create db privileges to the app user
+          GRANT_QUERY="ALTER USER ${APP_USER} CREATEDB;"
+          PGPASSWORD="password" psql -U "postgres" -h "localhost" -c "${GRANT_QUERY}"
+
+      - name: Run Migrations
+        run: |
+          SKIP_DOCKER=true ./scripts/init_db.sh
+
       - name: Run Tests
         run: cargo test
 
