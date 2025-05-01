@@ -9,7 +9,7 @@ env:
   SQLX_VERSION: 0.8.0
   SQLX_FEATURES: "rustls,postgres"
   APP_USER: postgres
-  APP_USER_PWD: mysecretpassword
+  APP_USER_PWD: password
   APP_DB_NAME: email_newsletter
 
 jobs:
@@ -25,24 +25,26 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: mysecretpassword
           POSTGRES_DB: email_newsletter
-        ports: 5432:5432
+        ports:
+          - 5432:5432
     steps:
       - name: Checkout repo code
         # The uses keyword specifies that this step will run v4 of the actions/checkout action.
         # This is an action that checks out your repository onto the runner, allowing you to run scripts or other actions against your code (such as build and test tools).
         # You should use the checkout action any time your workflow will run against the repository's code.
-      - uses: actions/checkout@v4
+        uses: actions/checkout@v4
 
       - name: Install rust tool chain
-      - uses: dtolnay/rust-toolchain@stable # Set up Rust environment
-      - uses: Swatinem/rust-cache@v2 # Cache Rust dependencies to speed up builds
+        uses: dtolnay/rust-toolchain@stable # Set up Rust environment
+      - name: Setup Rust Cache
+        uses: Swatinem/rust-cache@v2 # Cache Rust dependencies to speed up builds
 
       - name: Install sqlx-cli
-      - run: cargo install sqlx-cli --version=${{ env.SQLX_VERSION }}  --features ${{ env.SQLX_FEATURES }}  --no-default-features  --locked
+        run: cargo install sqlx-cli --version=${{ env.SQLX_VERSION }}  --features ${{ env.SQLX_FEATURES }}  --no-default-features  --locked
 
       - name: Create a user in posgres
         run: |
-          sudo apt-get install postgres-client
+          sudo apt-get install postgresql-client
 
           # Create the application user
           CREATE_QUERY="CREATE USER ${APP_USER} WITH PASSWORD '${APP_USER_PWD}';"
