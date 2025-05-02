@@ -10,6 +10,10 @@ A Email newsletter server in rust
   - code linting
 - API Routes
   - /health_check api to check if the server is running returns nothing takes nothing
+  - /subscriptions api to add a new subscription, body: email and name add's into the database
+- Tests
+  - health_check test to check if the server is running. check if returns 200 OK
+  - subscriptions test with valid data checks if the data is added to the database and invalid data checks if the response is 400
 
 ## Notes
 

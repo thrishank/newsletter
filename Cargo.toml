@@ -23,3 +23,5 @@ reqwest = "0.12.15"
 config = { version = "0.14", default-features = false, features = ["yaml"] }
 uuid = { version = "1.16.0", features = ["v4"] }
 chrono = { version = "0.4.41" }
+env_logger = "0.11.8"
+log = "0.4.27"

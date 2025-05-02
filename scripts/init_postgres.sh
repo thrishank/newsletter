@@ -46,6 +46,7 @@ CONNECTION_URL="postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${HOST}:${POR
 echo "PostgreSQL is starting..."
 echo "Connection URL: $CONNECTION_URL"
 export DATABASE_URL=$CONNECTION_URL
+export PGPASSWORD="$POSTGRES_PASSWORD"
 
 until psql -h "$HOST" -U "$POSTGRES_USER" -p "$PORT" -d "postgres" -c '\q'; do
   >&2 echo "Postgres is still unavailable - sleeping"

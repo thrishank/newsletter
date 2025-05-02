@@ -10,6 +10,13 @@ pub struct FormData {
 }
 
 pub async fn subscribe(form: web::Form<FormData>, connection: web::Data<PgPool>) -> impl Responder {
+    let request_id = Uuid::new_v4();
+    log::info!(
+        "request_id: {}, Saving new subcription to the database email: {}, name: {}",
+        request_id,
+        form.email,
+        form.name
+    );
     let subscribed_at: NaiveDateTime = Utc::now().naive_utc();
     match sqlx::query!(
         r#"
@@ -24,9 +31,19 @@ pub async fn subscribe(form: web::Form<FormData>, connection: web::Data<PgPool>)
     .execute(connection.get_ref())
     .await
     {
-        Ok(_) => HttpResponse::Ok().finish(),
+        Ok(_) => {
+            log::info!(
+                "request_id: {}, Subscription saved successfully",
+                request_id
+            );
+            HttpResponse::Ok().finish()
+        }
         Err(e) => {
-            println!("Error inserting subscription: {:?}", e);
+            log::error!(
+                "request_id: {}, Error inserting subscription: {:?}",
+                request_id,
+                e
+            );
             HttpResponse::InternalServerError().finish()
         }
     }
