@@ -27,7 +27,6 @@ jobs:
       #   run: |
       #     docker build --platform linux/amd64 -t registry.digitalocean.com/email-newsletter/email:latest .
       #     docker push registry.digitalocean.com/email-newsletter/email:latest
-
       - name: Deploy to Droplet
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
@@ -36,5 +35,6 @@ jobs:
         run: |
           echo "$SSH_PRIVATE_KEY" > private_key
           chmod 600 private_key
+          scp -o StrictHostKeyChecking=no -i private_key -r migrations "$SSH_USER@$DROPLET_IP:/root/"
           ssh -o StrictHostKeyChecking=no -i private_key "$SSH_USER@$DROPLET_IP" 'bash /root/update.sh'
           rm private_key
