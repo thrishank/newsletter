@@ -16,6 +16,12 @@ jobs:
         run: |
           sudo snap install doctl
 
+      - name: Debug DO_API_TOKEN
+        env:
+          DO_API_TOKEN: ${{ secrets.DO_API_TOKEN }}
+        run: |
+          echo "DO_API_TOKEN is set: ${DO_API_TOKEN:+set}"
+
       - name: Authenticate with DigitalOcean
         env:
           DO_API_TOKEN: ${{ secrets.DO_API_TOKEN }}
