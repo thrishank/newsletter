@@ -16,17 +16,11 @@ jobs:
         run: |
           sudo snap install doctl
 
-      - name: Debug DO_API_TOKEN
-        env:
-          DO_API_TOKEN: ${{ secrets.DO_API_TOKEN }}
-        run: |
-          echo "DO_API_TOKEN is set: ${DO_API_TOKEN:+set}"
-
       - name: Authenticate with DigitalOcean
         env:
           DO_API_TOKEN: ${{ secrets.DO_API_TOKEN }}
         run: |
-          doctl auth init -t "$DO_API_TOKEN"
+          doctl auth init -t dop_v1_54b971b5ba210d4e723d5d8fd7ad17aeaf629d8314e7c85d1378a2fb4e2ebdf9
           sudo snap connect doctl:dot-docker
           sudo doctl registry login
 
