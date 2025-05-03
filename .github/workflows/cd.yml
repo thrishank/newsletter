@@ -16,14 +16,13 @@ jobs:
         run: |
           sudo snap install doctl
 
-      # - name: Authenticate with DigitalOcean
-      #   env:
-      #     DO_API_TOKEN: ${{ secrets.DO_API_TOKEN }}
-      #   run: |
-      #     doctl auth init -t dop_v1_54b971b5ba210d4e723d5d8fd7ad17aeaf629d8314e7c85d1378a2fb4e2ebdf9
-      #     sudo snap connect doctl:dot-docker
-      #     sudo doctl registry login
-      #
+      - name: Authenticate with DigitalOcean
+        env:
+          DO_API_TOKEN: ${{ secrets.DO_API_TOKEN }}
+        run: |
+          sudo snap connect doctl:dot-docker
+          doctl registry login -t dop_v1_89c3fc813b8af5501c2df5f605c1597fd4a556c7b7bac52be5dc2e0f29e0e823
+
       - name: Build and push Docker image
         run: |
           docker build --platform linux/amd64 -t registry.digitalocean.com/email-newsletter/email:latest .

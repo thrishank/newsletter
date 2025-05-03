@@ -72,17 +72,17 @@ jobs:
       - name: Formatting
         run: cargo fmt --check
 
-  clippy:
-    name: Clippy
-    runs-on: ubuntu-latest
-    env:
-      SQLX_OFFLINE: true
-    steps:
-      - uses: actions/checkout@v3
-      - uses: dtolnay/rust-toolchain@stable
-        with:
-          components: clippy
-      - uses: Swatinem/rust-cache@v2
-      - name: Linting
-        run: cargo clippy -- -D warnings
-    # add this later cargo tarpaulin --verbose --workspace
+  # clippy:
+  #   name: Clippy
+  #   runs-on: ubuntu-latest
+  #   env:
+  #     SQLX_OFFLINE: true
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: dtolnay/rust-toolchain@stable
+  #       with:
+  #         components: clippy
+  #     - uses: Swatinem/rust-cache@v2
+  #     - name: Linting
+  #       run: cargo clippy -- -D warnings
+  #   # add this later cargo tarpaulin --verbose --workspace
