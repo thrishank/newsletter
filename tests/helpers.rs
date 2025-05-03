@@ -1,7 +1,6 @@
-use std::net::TcpListener;
-
 use email_newsletter::{config::get_configuration, server};
 use sqlx::{Connection, Executor, PgConnection, PgPool};
+use std::net::TcpListener;
 use uuid::Uuid;
 
 pub struct TestApp {
