@@ -14,16 +14,15 @@ jobs:
 
       - name: Install doctl
         run: |
-          curl -sL https://github.com/digitalocean/doctl/releases/latest/download/doctl-$(uname -s)-$(uname -m) -o doctl
-          chmod +x doctl
-          sudo mv doctl /usr/local/bin
+          sudo snap install doctl
 
       - name: Authenticate with DigitalOcean
         env:
           DO_API_TOKEN: ${{ secrets.DO_API_TOKEN }}
         run: |
           doctl auth init -t "$DO_API_TOKEN"
-          doctl registry login
+          sudo snap connect doctl:dot-docker
+          sudo doctl registry login
 
       - name: Build and push Docker image
         run: |
