@@ -1,6 +1,7 @@
-.env
+.git/
+.github/
+scripts/
 target/
 tests/
-scripts/
+.env
 README.md
-.git/

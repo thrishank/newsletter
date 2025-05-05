@@ -5,5 +5,5 @@ database:
   username: "postgres"
   password: "mysecretpassword"
   port: 5432
-  host: host.docker.internal
+  host: 127.0.0.1
   database_name: "email_newsletter"
