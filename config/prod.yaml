@@ -4,6 +4,6 @@ application:
 database:
   username: "postgres"
   password: "mysecretpassword"
-  port: 5434
+  port: 5432
   host: "127.0.0.1"
   database_name: "email_newsletter"

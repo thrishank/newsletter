@@ -12,7 +12,7 @@ A Email newsletter server in rust
   - build the docker image
   - Push the docker images to the registry
   - ssh into the server securely and run the deploy script
-  - Docker Build caching, reduced the build time from 6m 43s to
+  - Docker Build caching, reduced the build time from 6m 43s to 45s
 - API Routes
   - /health_check api to check if the server is running returns nothing takes nothing
   - /subscriptions api to add a new subscription, body: email and name add's into the database
@@ -28,5 +28,4 @@ A Email newsletter server in rust
 
 ## TODO
 
-- Database is starting and migrations is successfull but POST request is failing. Need to debug the issue
 - cargo clippy is failing with some warnings. Need to fix them
