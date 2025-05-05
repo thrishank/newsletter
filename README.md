@@ -12,6 +12,7 @@ A Email newsletter server in rust
   - build the docker image
   - Push the docker images to the registry
   - ssh into the server securely and run the deploy script
+  - Docker Build caching, reduced the build time from 6m 43s to
 - API Routes
   - /health_check api to check if the server is running returns nothing takes nothing
   - /subscriptions api to add a new subscription, body: email and name add's into the database
