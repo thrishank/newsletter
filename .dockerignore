@@ -2,5 +2,5 @@
 target/
 tests/
 scripts/
-Dockerfile
 README.md
+.git/
