@@ -42,7 +42,7 @@ jobs:
           DO_API_TOKEN: ${{ secrets.DO_API_TOKEN }}
         run: |
           sudo snap install doctl
-          # sudo snap connect doctl:dot-docker
+          sudo snap connect doctl:dot-docker
           doctl registry login -t "$DO_API_TOKEN"
 
       # - name: Build and push Docker image
