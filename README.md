@@ -11,7 +11,7 @@ A Email newsletter server in rust
 - CD pipeline
   - build the docker image
   - Push the docker images to the registry
-  - ssh into the server securely and run the deploy script
+  - ssh into the server securely and run the [deploy](https://github.com/thrishank/newsletter/blob/main/scripts/deploy.sh) script
   - Docker Build caching, reduced the build time from 6m 43s to 45s
 - API Routes
   - /health_check api to check if the server is running returns nothing takes nothing
@@ -25,6 +25,7 @@ A Email newsletter server in rust
 - Implemented the CI pipeline on github with 3 jobs(cargo test, cargo fmt -- check, cargo clippy -- -D warnings)
 - Implemented the /health_check api route returns 200 OK
 - Made the port on which server runs dyanmic. This is done by starting a server on port 0. This is telling the OS to pick free port from its ephemeral port range (e.g., 49152–65535 on most systems). This way we can spwan as many server as we want and avoid conflicts in tests
+- confif/local.yaml and prod.yaml config in production. The config is loaded using the config crate.
 
 ## TODO
 
