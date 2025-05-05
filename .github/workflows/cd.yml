@@ -23,11 +23,12 @@ jobs:
           sudo snap connect doctl:dot-docker
           doctl registry login -t "$DO_API_TOKEN"
 
-      # - name: Build and push Docker image
-      #   run: |
-      #     docker build --platform linux/amd64 -t registry.digitalocean.com/email-newsletter/email:latest .
-      #     docker push registry.digitalocean.com/email-newsletter/email:latest
-      - name: Deploy to Droplet
+      - name: Build and push Docker image
+        run: |
+          docker build --platform linux/amd64 -t registry.digitalocean.com/email-newsletter/email:latest .
+          docker push registry.digitalocean.com/email-newsletter/email:latest
+
+      - name: Deploy on Server
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           SSH_USER: ${{ secrets.SSH_USER }}
@@ -36,5 +37,5 @@ jobs:
           echo "$SSH_PRIVATE_KEY" > private_key
           chmod 600 private_key
           scp -o StrictHostKeyChecking=no -i private_key -r migrations "$SSH_USER@$DROPLET_IP:/root/"
-          ssh -o StrictHostKeyChecking=no -i private_key "$SSH_USER@$DROPLET_IP" 'bash /root/update.sh'
+          ssh -o StrictHostKeyChecking=no -i private_key "$SSH_USER@$DROPLET_IP" 'bash /root/deploy.sh'
           rm private_key
