@@ -45,11 +45,6 @@ jobs:
           sudo snap connect doctl:dot-docker
           doctl registry login -t "$DO_API_TOKEN"
 
-      # - name: Build and push Docker image
-      #   run: |
-      #     docker build --platform linux/amd64 -t registry.digitalocean.com/email-newsletter/email:latest .
-      #     docker push registry.digitalocean.com/email-newsletter/email:latest
-
       # Build and push Docker image
       - name: Build and push Docker image
         uses: docker/build-push-action@v6

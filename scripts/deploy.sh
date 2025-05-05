@@ -9,7 +9,7 @@ echo "Pulling latest image..."
 docker pull "$IMAGE"
 
 echo "Backup the sql database"
-export DATABASE_URL=postgresql://postgres:mysecretpassword@localhost:5432/email_newsletter
+export DATABASE_URL=postgresql://postgres:mysecretpassword@<your private ip>:5432/email_newsletter
 pg_dump "$DATABASE_URL" >"backup_$(date +%Y%m%d_%H%M%S).sql"
 
 echo "Running migrations"
